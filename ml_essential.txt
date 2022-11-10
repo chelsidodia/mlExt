@@ -1,0 +1,1790 @@
+R2 score find Karo, k confusion matrix or accuracy score
+
+
+
+numpy
+----------------------------------------
+
+
+import numpy as np
+n1=np.array([[10,20,30], [40,50,60]])
+n1
+print(n1.shape)
+
+
+
+n2=np.ones((2,3))
+n2
+
+n3=np.full((2,3),4)
+n3
+
+n4=np.arange(10,20)
+n4
+
+n4=np.arange(10,20, 2)
+n4
+
+n5=np.random.randint(1,100,5)
+n5
+
+n1.shape=(3,2)
+n6=n1
+print(n6.shape)
+
+n11=np.array([10,20,30])
+n12=np.array([40,50,60])
+# np.vstack((n11, n12))
+# np.hstack((n11, n12))
+np.column_stack((n11,n12))
+
+n11=np.array([10,20,30,40,50])
+n12=np.array([40,50,60,70,80])
+np.intersect1d(n11,n12)
+
+n11=np.array([10,20,30,40,50])
+n12=np.array([40,50,60,70,80])
+np.setdiff1d(n11,n12)
+
+n11=np.array([10,20,30,40,50])
+n12=np.array([40,50,60,70,80])
+np.setdiff1d(n12,n11)
+
+n11=np.array([10,20,30,40,50])
+n12=np.array([40,50,60,70,80])
+np.sum([n11,n12], axis=1)
+
+n11=np.array([10,20,30,40,50])
+n11_new=n11/2
+n11_new
+
+n11=np.array([10,20,30,40,50])
+np.mean(n11)
+
+n11=np.array([10,20,30,40,50])
+np.median(n11)
+
+n11=np.array([10,20,30,40,50])
+np.std(n11)
+
+np.eye(3,3)
+
+n11=np.array([10,20,30,40,50])
+np.diag(n11)
+
+n11=np.array([0,1,0,1,1,1,0])
+n11.astype('bool')
+
+n13=np.array([[10,20,30], [40,50,60], [70,80,90]])
+n13_new=n13.T
+n13_new
+
+n14=np.array([[10,20,30], [40,50,60]])
+np.save('my_numpy1', n14)
+
+n15=np.load('my_numpy1.npy')
+n15
+
+
+--------------------------------------------------------------------
+Bayseian model
+--------------------------------------------------------------------
+
+In some cases, we have knowledge about our domain before we see any of the data. Bayesian inference provides a straightforward way to encode that belief into a prior probability distribution. For example, say I am an economist predicting the effects of interest rates on tech stock price changes
+Bayesian statistics is a theory in the field of statistics based on the Bayesian interpretation of probability where probability expresses a degree of belief in an event. The degree of belief may be based on prior knowledge about the event, such as the results of previous experiments, or on personal beliefs about the event. This differs from a number of other interpretations of probability, such as the frequentist interpretation that views probability as the limit of the relative frequency of an event after many trials.
+Bayesian statistical methods use Bayes' theorem to compute and update probabilities after obtaining new data. Bayes' theorem describes the conditional probability of an event based on data as well as prior information or beliefs about the event or conditions related to the event.[2][3] For example, in Bayesian inference, Bayes' theorem can be used to estimate the parameters of a probability distribution or statistical model. Since Bayesian statistics treats probability as a degree of belief, Bayes' theorem can directly assign a probability distribution that quantifies the belief to the parameter or set of parameters
+
+
+import numpy as np
+import pandas as pd
+
+df=pd.read_csv('Air_Traffic.csv')
+df.head()
+#head() displays the first five rows of the dataframe
+
+Output: 
+Days	Season	Fog	Rain	Class
+0	WeekDay	Spring	None	None	On Time
+1	WeekDay	Winter	None	Slight	On Time
+2	WeekDay	Winter	None	None	On Time
+3	Holiday	Winter	High	Slight	Late
+4	Saturday	Summer	Normal	None	On Time
+
+x=df[["Days","Season","Fog","Rain"]]
+y=df["Season"].value_counts()
+y
+
+output:
+Winter    6
+Summer    6
+Spring    5
+Auntum    3
+Name: Season, dtype: int64
+
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+ds=df.apply(le.fit_transform)
+ds.tail()
+#tail() displays last five records in dataframe
+
+output:
+Days	Season	Fog	Rain	Class
+15	1	0	0	2	2
+16	3	0	1	0	2
+17	0	1	2	2	2
+18	3	1	2	1	2
+19	3	1	2	0	2
+
+df.tail()
+
+output:
+Days	Season	Fog	Rain	Class
+15	Saturday	Auntum	High	Slight	On Time
+16	WeekDay	Auntum	None	Heavy	On Time
+17	Holiday	Spring	Normal	Slight	On Time
+18	WeekDay	Spring	Normal	None	On Time
+19	WeekDay	Spring	Normal	Heavy	On Time
+
+x=ds[["Days","Season","Fog","Rain"]]
+y=ds["Season"]
+y
+#converted text values into numerical form assigned keys
+
+output:
+0     1
+1     3
+2     3
+3     3
+4     2
+5     0
+6     2
+7     2
+8     3
+9     2
+10    1
+11    2
+12    3
+13    2
+14    3
+15    0
+16    0
+17    1
+18    1
+19    1
+Name: Season, dtype: int64
+
+[sir:
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test=train_test_split(x, y, test_size=0.2)
+y_test
+
+output:
+9     2
+0     1
+8     3
+16    0
+Name: Season, dtype: int64
+]
+
+[k:
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2,random_state=42) #instead test_size we can use random_state then the test data will be fixed everytime you execute
+xtest
+]
+
+from sklearn.naive_bayes import GaussianNB
+model=GaussianNB()
+
+[not in k
+model.fit(x_train,y_train)
+y_pred=model.predict(x_test)
+y_pred
+]
+output:
+array([2, 1, 3, 0])
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_pred, y_test)
+cm
+
+output:
+
+array([[0, 0, 0],
+       [1, 2, 0],
+       [0, 0, 1]])
+
+from sklearn.metrics import accuracy_score
+acs=accuracy_score(y_pred, y_test)*100
+acs
+
+output:
+
+75.0
+just this much in k]
+[extra in sir
+y_test
+
+output:
+9     2
+0     1
+8     3
+16    0
+Name: Season, dtype: int64
+
+my_test=np.array([[3,3,0,0]])
+x_test=my_test
+result=model.predict(my_test)
+result
+
+output:
+/usr/local/lib/python3.7/dist-packages/sklearn/base.py:451: UserWarning: X does not have valid feature names, but GaussianNB was fitted with feature names
+  "X does not have valid feature names, but"
+array([3])
+
+y.head()
+
+output:
+0    1
+1    3
+2    3
+3    3
+4    2
+Name: Season, dtype: int64
+
+df.head()
+
+output:
+Days	Season	Fog	Rain	Class
+0	WeekDay	Spring	None	None	On Time
+1	WeekDay	Winter	None	Slight	On Time
+2	WeekDay	Winter	None	None	On Time
+3	Holiday	Winter	High	Slight	Late
+4	Saturday	Summer	Normal	None	On Time
+
+
+---------------------------------------------------------------------
+baysian model 2 k  : accuracy score
+---------------------------
+x=df[["Days","Season","Fog","Rain"]]
+y=df["Season"].value_counts()
+y
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+ds=df.apply(le.fit_transform)
+ds.tail()
+
+x=ds[["Days","Season","Fog","Rain"]]
+y=ds["Season"]
+y
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2,random_state=42) #instead test_size we can use random_state then the test data will be fixed everytime you execute
+xtest
+
+from sklearn.naive_bayes import GaussianNB
+model=GaussianNB()
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_pred, y_test)
+cm
+
+from sklearn.metrics import accuracy_score
+acs=accuracy_score(y_pred, y_test)*100
+acs
+
+---------------------------------------------------
+bayseian model sir 1
+------------------------------------------------
+
+
+import numpy as np
+import pandas as pd
+
+df=pd.read_csv('Air_Traffic.csv')
+df.head()
+
+o:
+Days	Season	Fog	Rain	Class
+0	WeekDay	Spring	None	None	On Time
+1	WeekDay	Winter	None	Slight	On Time
+2	WeekDay	Winter	None	None	On Time
+3	Holiday	Winter	High	Slight	Late
+4	Saturday	Summer	Normal	None	On Time
+
+x=df[["Days","Season","Fog","Rain"]]
+y=df["Season"].value_counts()
+y
+
+o:
+Winter    6
+Summer    6
+Spring    5
+Auntum    3
+Name: Season, dtype: int64
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+ds=df.apply(le.fit_transform)
+ds.tail()
+
+o:
+Days	Season	Fog	Rain	Class
+15	1	0	0	2	2
+16	3	0	1	0	2
+17	0	1	2	2	2
+18	3	1	2	1	2
+19	3	1	2	0	2
+
+df.tail()
+
+o:
+Days	Season	Fog	Rain	Class
+15	Saturday	Auntum	High	Slight	On Time
+16	WeekDay	Auntum	None	Heavy	On Time
+17	Holiday	Spring	Normal	Slight	On Time
+18	WeekDay	Spring	Normal	None	On Time
+19	WeekDay	Spring	Normal	Heavy	On Time
+
+x=ds[["Days","Season","Fog","Rain"]]
+y=ds["Season"]
+y
+
+o:
+0     1
+1     3
+2     3
+3     3
+4     2
+5     0
+6     2
+7     2
+8     3
+9     2
+10    1
+11    2
+12    3
+13    2
+14    3
+15    0
+16    0
+17    1
+18    1
+19    1
+Name: Season, dtype: int64
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test=train_test_split(x, y, test_size=0.2)
+y_test
+
+o:
+
+9     2
+0     1
+8     3
+16    0
+Name: Season, dtype: int64
+
+from sklearn.naive_bayes import GaussianNB
+model=GaussianNB()
+
+model.fit(x_train,y_train)
+y_pred=model.predict(x_test)
+y_pred
+
+o:
+array([2, 1, 3, 0])
+
+y_test
+
+o:
+9     2
+0     1
+8     3
+16    0
+Name: Season, dtype: int64
+
+my_test=np.array([[3,3,0,0]])
+x_test=my_test
+result=model.predict(my_test)
+result
+
+o:
+/usr/local/lib/python3.7/dist-packages/sklearn/base.py:451: UserWarning: X does not have valid feature names, but GaussianNB was fitted with feature names
+  "X does not have valid feature names, but"
+array([3])
+
+y.head()
+
+o:
+0    1
+1    3
+2    3
+3    3
+4    2
+Name: Season, dtype: int64
+
+df.head()
+
+o:
+
+Days	Season	Fog	Rain	Class
+0	WeekDay	Spring	None	None	On Time
+1	WeekDay	Winter	None	Slight	On Time
+2	WeekDay	Winter	None	None	On Time
+3	Holiday	Winter	High	Slight	Late
+4	Saturday	Summer	Normal	None	On Time
+
+
+----------------------------------------------
+
+bayseian model sir 2: accuracy score
+----------------------------------------------
+
+
+import numpy as np
+import pandas as pd
+
+df=pd.read_csv('Air_Traffic.csv')
+df.head()
+
+o:
+Days	Season	Fog	Rain	Class
+0	WeekDay	Spring	None	None	On Time
+1	WeekDay	Winter	None	Slight	On Time
+2	WeekDay	Winter	None	None	On Time
+3	Holiday	Winter	High	Slight	Late
+4	Saturday	Summer	Normal	None	On Time
+
+x=df[["Days","Season","Fog","Rain"]]
+y=df["Season"].value_counts()
+y
+
+o:
+Winter    6
+Summer    6
+Spring    5
+Auntum    3
+Name: Season, dtype: int64
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+ds=df.apply(le.fit_transform)
+ds.tail()
+
+o:
+Days	Season	Fog	Rain	Class
+15	1	0	0	2	2
+16	3	0	1	0	2
+17	0	1	2	2	2
+18	3	1	2	1	2
+19	3	1	2	0	2
+
+df.tail()
+
+o:
+Days	Season	Fog	Rain	Class
+15	Saturday	Auntum	High	Slight	On Time
+16	WeekDay	Auntum	None	Heavy	On Time
+17	Holiday	Spring	Normal	Slight	On Time
+18	WeekDay	Spring	Normal	None	On Time
+19	WeekDay	Spring	Normal	Heavy	On Time
+
+x=ds[["Days","Season","Fog","Rain"]]
+y=ds["Season"]
+y
+
+o:
+0     1
+1     3
+2     3
+3     3
+4     2
+5     0
+6     2
+7     2
+8     3
+9     2
+10    1
+11    2
+12    3
+13    2
+14    3
+15    0
+16    0
+17    1
+18    1
+19    1
+Name: Season, dtype: int64
+
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test=train_test_split(x, y, test_size=0.2, random_state=42)
+y_test
+
+o:
+0     1
+17    1
+15    0
+1     3
+Name: Season, dtype: int64
+
+from sklearn.naive_bayes import GaussianNB
+model=GaussianNB()
+
+model.fit(x_train,y_train)
+y_pred=model.predict(x_test)
+y_pred
+
+o:
+array([1, 1, 1, 3])
+
+
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(y_pred, y_test)
+cm
+array([[0, 0, 0],
+       [1, 2, 0],
+       [0, 0, 1]])
+
+from sklearn.metrics import accuracy_score
+acs=accuracy_score(y_pred, y_test)*100
+acs
+o:
+75.0
+
+
+y_test
+
+o:
+9     2
+0     1
+8     3
+16    0
+Name: Season, dtype: int64
+
+
+------------------------------------------------------------------
+knn : confusion matrix
+--------------------------------------------------------------------
+This algorithm is used to solve the classification model problems. K-nearest neighbor or K-NN algorithm basically creates an imaginary boundary to classify the data. When new data points come in, the algorithm will try to predict that to the nearest of the boundary line.
+
+knn m akevu aave k data set ena jeva type na njik na je data point hoi ne eni sathe gothvai
+nearest neighbour shodhe
+
+
+import numpy as np
+import pandas as pd
+
+df=pd.read_csv('iris.csv')
+df.head()
+
+Output:
+Id	SepalLengthCm	SepalWidthCm	PetalLengthCm	PetalWidthCm	Species
+0	1	5.1	3.5	1.4	0.2	Iris-setosa
+1	2	4.9	3.0	1.4	0.2	Iris-setosa
+2	3	4.7	3.2	1.3	0.2	Iris-setosa
+3	4	4.6	3.1	1.5	0.2	Iris-setosa
+4	5	5.0	3.6	1.4	0.2	Iris-setosa
+
+x=df[["SepalLengthCm",	"SepalWidthCm",	"PetalLengthCm",	"PetalWidthCm"	]]
+y=df['Species']
+x.head()
+
+output:
+
+SepalLengthCm	SepalWidthCm	PetalLengthCm	PetalWidthCm
+0	5.1	3.5	1.4	0.2
+1	4.9	3.0	1.4	0.2
+2	4.7	3.2	1.3	0.2
+3	4.6	3.1	1.5	0.2
+4	5.0	3.6	1.4	0.2
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+y=le.fit_transform(y)  //converting only one
+y
+
+output:
+
+array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
+
+
+#30% = 0.3
+from sklearn.model_selection import train_test_split
+xtrain, xtest, ytrain, ytest=train_test_split(x,y, test_size=0.2, random_state=42)
+xtest
+
+output:
+
+SepalLengthCm	SepalWidthCm	PetalLengthCm	PetalWidthCm
+73	6.1	2.8	4.7	1.2
+18	5.7	3.8	1.7	0.3
+118	7.7	2.6	6.9	2.3
+78	6.0	2.9	4.5	1.5
+76	6.8	2.8	4.8	1.4
+31	5.4	3.4	1.5	0.4
+64	5.6	2.9	3.6	1.3
+141	6.9	3.1	5.1	2.3
+68	6.2	2.2	4.5	1.5
+82	5.8	2.7	3.9	1.2
+110	6.5	3.2	5.1	2.0
+12	4.8	3.0	1.4	0.1
+36	5.5	3.5	1.3	0.2
+9	4.9	3.1	1.5	0.1
+19	5.1	3.8	1.5	0.3
+56	6.3	3.3	4.7	1.6
+104	6.5	3.0	5.8	2.2
+69	5.6	2.5	3.9	1.1
+55	5.7	2.8	4.5	1.3
+132	6.4	2.8	5.6	2.2
+29	4.7	3.2	1.6	0.2
+127	6.1	3.0	4.9	1.8
+26	5.0	3.4	1.6	0.4
+128	6.4	2.8	5.6	2.1
+131	7.9	3.8	6.4	2.0
+145	6.7	3.0	5.2	2.3
+108	6.7	2.5	5.8	1.8
+143	6.8	3.2	5.9	2.3
+45	4.8	3.0	1.4	0.3
+30	4.8	3.1	1.6	0.2
+
+from sklearn.neighbors import KNeighborsClassifier
+model=KNeighborsClassifier(n_neighbors=3, metric="euclidean")
+model.fit(xtrain, ytrain)
+
+output:
+
+KNeighborsClassifier(metric='euclidean', n_neighbors=3)
+
+ypred=model.predict(xtest)
+ypred
+
+output:
+array([1, 0, 2, 1, 1, 0, 1, 2, 1, 1, 2, 0, 0, 0, 0, 1, 2, 1, 1, 2, 0, 2,
+       0, 2, 2, 2, 2, 2, 0, 0])
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(ypred, ytest)
+cm
+
+output:
+array([[10,  0,  0],
+       [ 0,  9,  0],
+       [ 0,  0, 11]])
+
+
+------------------------------------------------------------------------
+knn 2
+-------------------------------------------------------------------------
+import numpy as np
+import pandas as pd
+
+df=pd.read_csv('diabetes.csv')
+df.head()
+
+x=df[["Pregnancies","Glucose","BloodPressure","SkinThickness","Insulin","BMI","DiabetesPedigreeFunction","Age"]]
+y=df['Outcome']
+y.head()
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+y=le.fit_transform(y) #transform data from string to number
+y
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2,random_state=42) #instead test_size we can use random_state then the test data will be fixed everytime you execute
+xtest
+
+from sklearn.neighbors import KNeighborsClassifier
+model=KNeighborsClassifier(n_neighbors=19,metric="euclidean") #n_neighbors means value of k, which needs to be an odd number
+model.fit(xtrain, ytrain)
+
+ypred=model.predict(xtest)
+ypred
+
+from sklearn.metrics import confusion_matrix
+cm=confusion_matrix(ypred,ytest)
+cm
+
+----------------------------------------------------------------------------------------
+linear regression 1 model code (acc to sir)
+--------------------------------------------------------------------------------
+Like linear regression no concept ae che k koi new data add kariye toh te predict kare k new data kai category ma aavse
+eni najik na data point na base per
+
+
+import pandas as pd
+import numpy as np
+
+df=pd.read_csv('Salary_Data.csv')
+df.head()
+
+o:
+	YearsExperience	Salary
+0	1.1	39343.0
+1	1.3	46205.0
+2	1.5	37731.0
+3	2.0	43525.0
+4	2.2	39891.0
+
+y=df['Salary'].values
+x=df['YearsExperience'].values
+
+
+y=y.reshape(len(y),1)
+y.shape
+
+o:
+(30, 1)
+
+x=x.reshape(len(x),1)
+x.shape
+
+o:
+(30, 1)
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest, ytrain, ytest=train_test_split(x,y, test_size=0.2 )
+
+from sklearn.linear_model import LinearRegression
+lin_reg=LinearRegression()
+
+lin_reg.fit(xtrain, ytrain)
+
+o:
+LinearRegression()
+
+## ypred=lin_reg.predict(xtest)
+ypred=lin_reg.predict([[12]])
+ypred
+
+o:
+array([139001.30799858])
+
+
+
+-----------------------------------------------------------------
+
+linear regression with regresssion line (acc to sir) ,  f
+_----------------------------------------------------------
+
+
+
+import pandas as pd
+import numpy as np
+
+df=pd.read_csv('Salary_Data.csv')
+df.head()
+
+o:
+YearsExperience	Salary
+0	1.1	39343.0
+1	1.3	46205.0
+2	1.5	37731.0
+3	2.0	43525.0
+4	2.2	39891.0
+
+y=df['Salary'].values
+x=df['YearsExperience'].values
+
+y=y.reshape(len(y),1)
+y.shape
+
+o:
+(30, 1)
+
+x=x.reshape(len(x),1)
+x.shape
+
+o:
+(30, 1)
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest, ytrain, ytest=train_test_split(x,y, test_size=0.2 )
+
+from sklearn.linear_model import LinearRegression
+lin_reg=LinearRegression()
+
+lin_reg.fit(xtrain, ytrain)
+
+o:
+LinearRegression()
+
+ypred=lin_reg.predict(xtest)
+##ypred=lin_reg.predict([[15]])
+ypred
+
+o:
+array([ 75262.90676623, 124731.51667791,  35307.49106834,  89532.69808691,
+        99997.21172207,  92386.65635104])
+
+### Regression line for Training samples
+import matplotlib.pyplot as plt
+plt.scatter(xtrain,ytrain, color='red', label='Actual Data')
+plt.scatter(xtrain, lin_reg.predict(xtrain), color='blue', label='Predicted Data')
+plt.plot(xtrain,lin_reg.predict(xtrain), '--', color='green', label='Line of Regression')
+plt.legend(loc='best')
+plt.show()
+
+o:
+graph with line
+
+### Regression line for Testing samples
+import matplotlib.pyplot as plt
+plt.scatter(xtest,ytest, color='red', label='Actual Data')
+plt.scatter(xtest, ypred, color='blue', label='Predicted Data')
+plt.plot(xtest,ypred, '--', color='green', label='Line of Regression')
+plt.legend(loc='best')
+plt.show()
+
+o:
+graph with line
+
+m=lin_reg.coef_
+print(m)
+
+o:
+[9513.19421378]
+
+b=lin_reg.intercept_
+print(b)
+
+o:
+24842.977433182343
+
+new_y=m*15+b
+print(new_y)
+o:
+[167540.89063993]
+
+from sklearn.metrics import r2_score
+r2=r2_score(ytest,ypred)
+r2
+
+o:
+0.9668274485976448
+
+
+
+
+
+---------------------------------------------------
+k-means clustering
+----------------------------------
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df=pd.read_csv("Mall_Customers.csv")
+df.head()
+
+X=df.iloc[:, [3,4]].values
+X
+
+plt.scatter(X[:,0],X[:,1], color='black', label='data points')
+plt.xlabel('Income')
+plt.ylabel('Spending')
+plt.legend()
+plt.show()
+
+o:
+ picture or graph with scattered dots
+
+from sklearn.cluster import KMeans
+wcss=[]
+for i in range(1,11):
+  km=KMeans(n_clusters=i)
+  km.fit(X)
+  wcss.append(km.inertia_)
+
+print (wcss)
+
+o:
+[269981.28, 181363.59595959593, 106348.37306211122, 73679.78903948836, 44448.4554479337, 37233.814510710006, 30259.65720728547, 25095.70320999756, 21797.08494464637, 20043.562757713524]
+
+
+plt.figure(figsize=(12,6))
+plt.plot(range(1,11), wcss)
+plt.plot(range(1,11),wcss, linewidth=2, color='red', marker='8')
+plt.xlabel('K values')
+plt.xticks(np.arange(1,11))
+plt.ylabel('wcss values')
+plt.show()
+
+o:
+graph with a line (in sir a curve like a bowl)
+
+df1=df[["Annual Income (k$)",	"Spending Score (1-100)"]]
+X=df1
+X.head()
+
+#df1=[]
+km1=KMeans(n_clusters=5)
+km1.fit(X)
+y=km1.predict(X)
+df1["label"]=y
+df1
+
+import seaborn as sns
+plt.figure(figsize=(12,6))
+sns.scatterplot(x='Annual Income (k$)', y='Spending Score (1-100)',hue="label",palette=['green','orange','brown','dodgerblue','red'], data=X, s=50)
+plt.xlabel('Annual Income')
+plt.ylabel('Spending score')
+plt.show()
+
+o:
+graph of scattered dots in groups with diff colors
+
+
+
+
+
+
+--------------------------
+ann demo
+--------------------------
+
+import numpy as np
+
+x=np.array([[0,1,0],[1,1,0], [1,0,1],[0,0,1]])
+y=np.array([[0],[1],[1],[0]])
+print(x,"\n \n",y)
+
+out: 
+[[0 1 0]
+ [1 1 0]
+ [1 0 1]
+ [0 0 1]] 
+ 
+ [[0]
+ [1]
+ [1]
+ [0]]
+
+np.random.seed(10)
+weights=np.random.random((3,1))
+weights
+
+out:
+array([[0.77132064],
+       [0.02075195],
+       [0.63364823]])
+
+
+sum=np.dot(x,weights)+0.02
+sum
+
+out:
+array([[0.04075195],
+       [0.81207259],
+       [1.42496888],
+       [0.65364823]])
+
+# Activation Function: Sigmoid
+def act(x):
+  return 1/(1+np.exp(-x))
+
+ypred=act(sum)
+ypred
+
+out:
+array([[0.51018658],
+       [0.69255099],
+       [0.8061162 ],
+       [0.65783211]])
+
+ypred.round()
+
+out:
+
+array([[1.],
+       [1.],
+       [1.],
+       [1.]])
+
+sum=np.dot(x,weights)+0.02
+ypred=act(sum)
+error=y-ypred
+error
+
+out:
+array([[-0.51018658],
+       [ 0.30744901],
+       [ 0.1938838 ],
+       [-0.65783211]])
+
+# GradientFunction
+def gradient(x,error):
+  return error*(x*(1-x))
+
+sum=np.dot(x,weights)+0.02
+ypred=act(sum)
+error=y-ypred
+w_chg=gradient(ypred, error)  ### Gradient decent
+weights=weights+np.dot(x.T, w_chg)  ### back propogation
+error
+
+out:
+array([[-0.51018658],
+       [ 0.30744901],
+       [ 0.1938838 ],
+       [-0.65783211]])
+
+#Training the Model
+for i in range(1000):
+  sum=np.dot(x,weights)+0.02
+  ypred=act(sum)
+  error=y-ypred
+  w_chg=gradient(ypred, error)
+  weights=weights+np.dot(x.T, w_chg)
+error 
+
+out:
+
+array([[-0.03366862],
+       [ 0.02363088],
+       [ 0.02363087],
+       [-0.03366863]])
+
+ypred
+
+out:
+array([[0.03366862],
+       [0.97636912],
+       [0.97636913],
+       [0.03366863]])
+
+ypred.round()
+
+out:
+array([[0.],
+       [1.],
+       [1.],
+       [0.]])
+
+weights
+
+out:
+array([[ 7.07931741],
+       [-3.37749074],
+       [-3.3774905 ]])
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------
+seminar
+--------------------------------------------
+
+a = 12
+print(type(a))
+
+b = 123
+print(type(b))
+
+a=b=c=3
+
+a=b=3,4
+
+tuple List Dictionary
+
+tuple =('ab','hdsf','ef')
+print(tuple)
+
+dictionary ={
+    "hi":"world",
+    "abc":"pqr",
+    "rollNo":[1,3,5]
+}
+print(dictionary)
+print(len(dictionary))
+
+list = ["hello","world"]
+list[position]="new word"
+print(list)
+
+
+#+-*/%*
+x = 10
+y = 5
+print(x+y)
+print(x-y)
+print(x*y)
+print(x/y)
+
+# =,+=,-+,*=..
+x = 5
+x +=5
+print(x)
+x -= 2
+print(x)
+
+# ==,!=,>,<...
+
+x=5
+y=3
+print(x==y)
+print(x!=y)
+
+# is,isnot
+x=['abc','def']
+y=['abc','def']
+z=x
+print(y is x)
+print(z is x)
+
+# in ,notin
+x = 'abc'
+y= ['abc','def']
+print(x in y)
+
+
+
+#conditional statement
+if(True):
+  print(True)
+
+x = False
+if(x):
+  print(True)
+else:
+  print(False)
+
+#ladder conditional statement
+x = 2
+if(x ==2):print("one");print("two")
+elif(x ==3):print("four");print("five")
+elif(x==4):print("six");print("seven")
+else:print("default");print("statement")
+
+from typing import no_type_check_decorator
+#switch case
+
+def zero():
+  return "zero"
+def one():
+  return "one"
+
+switcher ={
+      0:zero,
+      1:one,
+      2:lambda : "three"
+  }
+
+def switchExample(number):
+  return switcher.get(number,lambda:"default")
+
+ 
+print(switchExample(7))
+
+
+##Quotes In Python String
+
+#To quote a string in Python use single quotation marks inside of double quotation marks or vice versa
+
+example1 = "Hello 'Python' world"
+example2 = 'Hello "Machine Learning" world'
+print(example1)
+print(example2)
+
+##String Slicing
+
+#Method 1: Using slice() method
+
+#slice(start, stop, step)
+#start: Starting index where the slicing of object starts.
+#stop: Ending index where the slicing of object stops.
+#step: It is an optional argument that determines the increment between each index for slicing
+
+String = 'HELLOWORLD'
+ 
+s1 = slice(3) 
+s2 = slice(0, 5)
+s3 = slice(1, 5, 2)
+s4 = slice(-1, -12, -2)
+ 
+print(String[s1])
+print(String[s2])
+print(String[s3])
+print(String[s4])
+
+#Method 2: Using List/array slicing  [ : : ]  method
+
+#arr[start:stop]         # items start through stop-1
+#arr[start:]             # items start through the rest of the array
+#arr[:stop]              # items from the beginning through stop-1
+#arr[start:stop:step]    # start through not past stop, by step
+
+String = 'MACHINE_LEARNING'
+
+print(String[:3])
+print(String[1:5])
+print(String[1:5:2])
+print(String[-1:-12:-2])
+print(String[::-1]) #Reverse String
+
+##Concatenate Strings
+
+var1 = "Hello"
+var2 = "World"
+
+var3 = var1 +" " +var2          #Using + Operator
+
+var4 = " ".join([var1, var2])   #Using join() Method
+
+var5 = "%s %s"%(var1,var2)      #Using % Operator
+
+var6 = "{} {}".format(var1, var2) #Using format() function 
+
+print(var3)
+print(var4)
+print(var5)
+print(var6)
+print(var1, var2)     #Using , (comma)
+
+##String formatting
+
+#Formatting string using % Operator
+print("Welcome To %s" %'Python')    #Here %s Used For inject a string 
+print('There are %d dogs.' %4)      #Here %d Used For inject a integer numbers
+print('The value of pi is: %f' %(3.141592))     #Here %f Used For inject a float number
+print('Floating point numbers: %1.1f' %(13.174))    #Print Float value With One Point
+
+#Formatting string using format() method
+
+#Formatters work by putting in one or more replacement fields and placeholders defined by a pair of curly braces { } 
+#into a string and calling the str.format()
+
+print('We all are {}.'.format('equal'))
+
+#insert object by using index-based position
+print('{2} {1} {0}'.format('Learning','Machine', 'Hello'))  
+
+#insert objects by using assigned keywords
+print('a: {a}, b: {b}, c: {c}'.format(a=1,b ='Two',c =12.3))
+
+#reuse the inserted objects to avoid duplication
+print('The first {p} was alright, but the {p} {p} was tough.'.format(p = 'second'))
+
+#Formatted String using F-strings
+
+#PEP 498 introduced a new string formatting mechanism known as Literal String Interpolation or F-strings 
+#f character preceding the string literal
+
+name = 'ABC'
+print(f"My name is {name}.")
+
+#Arithmetic operations using F-strings
+a = 6
+b = 5
+print(f"He said his age is {2 * (a + b)}.")
+
+#Lambda Expressions using F-strings
+print(f"He said his age is {(lambda x: x*2)(3)}")
+
+#f-strings are faster and better than both %-formatting and str.format()
+#f-strings expressions are evaluated are at runtime
+
+##Escape Sequence in Python
+
+#An escape sequence is a sequence of characters that, when used inside a character or string,
+#does not represent itself but is converted into another character or series of characters
+
+#In the escape sequence, a character is preceded by a backslash (\)
+
+print('Who\'s this?')
+
+print('Machine\nLearning')    #\n use for print string in Newline
+
+print('Machine\\Learning')    #printing a single backslash so we use double backslash
+
+print('Hello\tPython')        #\t add tab space between words
+
+print('Hello \bPython')       #\b remove the space between the words.
+
+print("\x48\x45\x4C\x4C\x4F\x20\x57\x4F\x52\x4C\x44")   #\xhh print alphabets using their Hexa values
+
+print("\101\114\105\130\101") #\ooo print alphabets using their Octal values
+
+
+#Remove all escape sequence from a list
+s = ['Hello','\x50','to','\x44','World']
+print(s)
+
+##STRING FUNCTION
+
+text = 'hELLo aLExa hERe'
+print(len(text))      #len() returns the number of characters in a string
+
+num = 100
+s = str(num)
+print(s, type(s))     #str() Returns the string version of the object
+
+print(text.upper())   #upper() convert string to upper case
+
+print(text.lower())   #lower() convert string to Lower case
+
+#strip() removes any leading (spaces at the beginning) and trailing (spaces at the end) characters 
+#space is the default leading character to remove
+txt = "     Python     "
+print(txt.strip())
+print(text.strip('hELLo'))    #strip hello from string
+
+##isdigit()
+#True – If all characters in the string are digits.
+#False – If the string contains 1 or more non-digits.
+string = '3453'
+print(string.isdigit())
+
+string = '353ff'
+print(string.isdigit())
+
+##isalpha()
+#True – If all characters in the string are alphabet.
+#False – if the string contains 1 or more non-alphabets.
+string = 'Python'
+print(string.isalpha())
+
+string = 'Python2022'
+print(string.isalpha())
+
+##isspace()
+#True – If all characters in the string are whitespace characters.
+#False – If the string contains 1 or more non-whitespace characters.
+string = 'Python'
+print(string.isspace())
+
+string = '\n\n\n'
+print(string.isspace())
+
+##startswith()
+# It returns True if strings start with the given prefix otherwise returns False
+string = 'Welcome to Python'
+print(string.startswith('Python'))
+print(string.startswith('Welcome'))
+print(string.startswith('to',8))  #with start parameter
+
+##endswith()
+# It returns True if the string ends with the given suffix otherwise return False. 
+string = 'Welcome to Python'
+print(string.endswith('Python'))
+print(string.endswith('Welcome'))
+
+##find()
+#Returns the lowest index of the substring if it is found in a given string.
+#If it’s not found then it returns -1.
+
+word = 'hello in python'
+  
+# returns first occurrence of Substring
+result = word.find('hello')
+print("Substring 'hello' found at index:", result)
+  
+result = word.find('in')
+print("Substring 'in ' found at index:", result)
+
+print(word.find('he', 5)) # he not found at 5 index so return -1
+
+##replace()
+#It returns a copy of the string where all occurrences of a substring are replaced with another substring
+
+#syntax==>string.replace(old, new, count)
+
+string = "Hello Alexa Here"
+print(string.replace("Alexa", "Python"))
+
+##split()
+#Returns a list of strings after breaking the given string by the specified separator
+
+text = 'Hello World'
+print(text.split())   # Splits at space
+
+word = 'Hello, MAchine, Learning'
+print(word.split(','))    # Splits at ','
+
+word = 'Hello:MAchine:Learning'
+print(word.split(':'))    # Splitting at ':'
+
+word = 'CatBatSatFatOr'
+print(word.split('t'))    # Splitting at t
+
+##join()
+#returns a string concatenated with the elements of iterable. 
+
+list1 = ['1','2','3','4']
+s = "-"   #joins elements of list1 by '-' and stores in string s
+s = s.join(list1)   #join use to join a list of strings to a separator s
+print(s)
+
+#########################################################################################################################
+##Comparison operators
+#Comparison operators are used to compare two values:
+
+print("5 is Equal 5:  ",5 == 5) 
+print("5 is Equal 8: ",5 == 8) 
+print("6 is Not Equal 8: ",6 != 8) 
+print("10 is Greater than 6: ",10 > 6) 
+print("99 is less than 8: ",99 < 8) 
+print("10 is Greater than equal to 8: ",10 >= 6) 
+print("5 is less than equal to 3: ",5 <= 3)
+
+##Arithmetic operators
+#Arithmetic operators are used with numeric values to perform common mathematical operations
+
+print(10 + 20)  #Addition
+print(50 - 15)  #Subtraction
+print(33 * 20)  #Multiplication
+print(100 / 20) #Division
+print(5 % 2)    #Modulus
+print(2 ** 5)   #Exponentiation ==>same as 2*2*2*2*2
+print(15 // 2)    #Floor division
+
+##Membership  operators
+#Membership operators are used to test if a sequence is presented in an object
+
+#in Operator
+#Returns True if a sequence with the specified value is present in the object
+
+x = ["Android", "IOS","PYTHON"]
+print("PYTHON" in x)
+
+#not in Operator
+#Returns True if a sequence with the specified value is not present in the object
+print("JAVA" not in x)
+
+##Identity operators
+#Identity operators are used to compare the objects, not if they are equal, 
+#but if they are actually the same object, with the same memory location:
+
+#is Operator
+#Returns true if both variables are the same object
+
+x = ["Android", "IOS","PYTHON"]
+y = ["Android", "IOS","PYTHON"]
+z = x
+print(x is z) #returns True because z is the same object as x
+
+print(x is y) #returns False because x is not the same object as y, even if they have the same content
+
+print(x == y) #to demonstrate the difference betweeen "is" and "==": this comparison returns True because x is equal to y
+
+
+#is not Operator
+#Returns true if both variables are not the same object
+print(x is not z) #returns False because z is the same object as x
+
+print(x is not y) #returns True because x is not the same object as y, even if they have the same content
+
+print(x != y) #to demonstrate the difference betweeen "is not" and "!=": this comparison returns False because x is equal to y
+
+##Logical  operators
+#Logical operators are used to combine conditional statements:
+
+#and operators ==> Returns True if both statements are true
+x = 5
+print(x > 3 and x < 10)
+
+#or	operators ==> Returns True if one of the statements is true
+print(x > 3 or x < 4)
+
+#not operators ==>	Reverse the result, returns False if the result is true
+print(not(x > 3 and x < 10))
+
+
+
+
+def fun() :
+    print("Function is called")
+
+fun()
+
+def add_numbers(x,y):
+    sum = x+y
+    return sum
+
+n1 = 5
+n2 = 6
+print("The sum is ",add_numbers(n1,n2))
+
+def oddEven(x=10):  #default value
+  if(x % 2 == 0) :
+    print("Even")
+  else :
+    print("odd")
+
+oddEven(5)
+
+def printt():   # this function use global variable tamp
+    print(tamp)
+
+tamp = 'hello world'
+printt()
+
+a = 1
+
+# Uses global because there is no local 'a'
+def f():
+	print('Inside f() : ', a)
+
+# Variable 'a' is redefined as a local
+def g():	
+	a = 2
+	print('Inside g() : ', a)
+
+# Uses global keyword to modify global 'a'
+def h():	
+	global a
+	a = 3
+	print('Inside h() : ', a)
+
+# Global scope
+print('global : ', a)
+f()
+g()
+h()
+print('global : ', a)
+
+# delete function
+del(f)
+
+f()
+
+#A lambda function is a small anonymous function.
+# can take any number of arguments, but can only have one expression.
+x = lambda a : a + 10
+print(x(5))
+
+def myfunc(n):
+  return lambda a : a * n
+
+x = myfunc(2)
+print (x(3))
+
+# Recursive function
+def recursive_fibonacci(n):
+  if n <= 1:
+	  return n
+  else:
+	  return(recursive_fibonacci(n-1) + recursive_fibonacci(n-2))
+
+n_terms = 7
+
+# check if the number of terms is valid
+for i in range(n_terms):
+	print(recursive_fibonacci(i))
+
+
+
+---------------------
+list
+---------------------
+
+#creating list
+#method 1
+items = [1,2,3,4]
+items
+#method 2
+list2 = list()
+
+#accessing list
+#You can access items in a list using the item's index
+print(items[2])
+
+#reassiging list
+items[1]="two";
+items
+
+#operations on list
+#1 repetition operator enables the list elements to be repeated multiple times.
+l1 =[1,2,3]
+l1*2
+
+#2 concatenation 
+l2=[4,5,6]
+l2+l1
+
+# membership -checks the particular item of list exist in other list or not.
+print(2 in l1)
+
+#count length of list
+len(l2)
+
+#iterting over list
+for i in l1:
+  print(i*2)
+
+#buil-in methods 
+# 1 The append() method, seen in the last section, adds an item at the last index of a list.
+list2.append(2)
+items.append(5)
+#list2
+items
+
+# 2 using the insert() method, you specify the index where it should be placed.
+items.insert(2,"three")
+items
+
+# 3 count - returns no of appearing elements in specified list
+print(items.count(1))
+
+# 4 index - returns index of specified element 
+print(items.index(4))
+
+# 5  resverse
+items.reverse()
+print(items)
+
+#6 sort 
+l1=[3,6,9,2,1]
+l1.sort() #default ascending 
+#l1.sort(reverse=True)
+l1
+
+#built in functions 
+#1 length
+print("length=",len(l1))
+#2 min
+print("min=",min(l1))
+# 3 max
+print("max=",max(l1))
+
+#List Comprehension 
+#create new list based on existing list. whether you copy whole list or apply some condition or peration on each member.
+#example : square of elements 
+l3= [2,4,5,6,8,9]
+l4=[]
+for x in l3:
+  l4.append(x**2)
+l4
+
+l4.clear()
+l4 = [x**2 for x in l3]
+l4
+
+#slicing list
+print(l4[2:])
+print(l4[:2])
+print(l4[2:4])
+
+#Deleting list
+# 1 delete whole list
+del list2
+list2
+
+# remove() - remove specified element 
+items.remove(1)
+items
+
+# remove last element of list
+items.pop()
+items
+
+#clear() clears all elements from list
+items.clear()
+items
+
+# creating multidimensional list
+a = [[2, 4, 6, 8, 10], [3, 6, 9, 12, 15], [4, 8, 12, 16, 20]]
+print(a)
+
+# iterating over 
+a = [[2, 4, 6, 8, 10], [3, 6, 9, 12, 15], [4, 8, 12, 16, 20]]
+for n in a:
+    print(n)
+
+#some opeations
+# Append  at end of list
+a.append([5, 10, 15, 20, 25])
+print(a)
+# #add elements to current/ specified list
+# a[0].extend([12, 14, 16, 18])
+# print(a)
+
+# #reverse
+# a[2].reverse()
+# print(a)
+
+
+
+-----------------------------------------------
+k_means
+------------------------------------------------
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df=pd.read_csv("Mall_Customers.csv")
+df.head()
+
+X=df.iloc[:, [3,4]].values
+X
+
+plt.scatter(X[:,0],X[:,1], color='black', label='data points')
+plt.xlabel('Income')
+plt.ylabel('Spending')
+plt.legend()
+plt.show()
+
+out: a graph with clusters of dots
+
+from sklearn.cluster import KMeans
+wcss=[]
+for i in range(1,11):
+  km=KMeans(n_clusters=i)
+  km.fit(X)
+  wcss.append(km.inertia_)
+
+print (wcss)
+
+out:
+[269981.28, 181363.59595959593, 106348.37306211122, 73679.78903948836, 44448.4554479337, 37233.814510710006, 30259.65720728547, 25095.70320999756, 21797.08494464637, 20043.562757713524]
+
+plt.figure(figsize=(12,6))
+plt.plot(range(1,11), wcss)
+plt.plot(range(1,11),wcss, linewidth=2, color='red', marker='8')
+plt.xlabel('K values')
+plt.xticks(np.arange(1,11))
+plt.ylabel('wcss values')
+plt.show()
+
+out:
+a graph with curved line
+
+df1=df[["Annual Income (k$)",	"Spending Score (1-100)"]]
+X=df1
+X.head()
+
+#df1=[]
+km1=KMeans(n_clusters=5)
+km1.fit(X)
+y=km1.predict(X)
+df1["label"]=y
+df1
+
+import seaborn as sns
+plt.figure(figsize=(12,6))
+sns.scatterplot(x='Annual Income (k$)', y='Spending Score (1-100)',hue="label",palette=['green','orange','brown','dodgerblue','red'], data=X, s=50)
+plt.xlabel('Annual Income')
+plt.ylabel('Spending score')
+plt.show()
+
+out: a graph with colorful clusters of dots
